@@ -41,12 +41,22 @@ class Program
                         ReturnItem();
                         break; 
                     case 6:
+                        SearchByTitle();
+                        break;
+                    case 7:
+                        DisplayCatalog();
+                        break;
+                    case 8:
+                        catalog.SaveData();
+                        break;
+                    case 9:
                         exit = true;
                         Console.WriteLine("Exiting...");
                         break;
                     default:
-                        Console.WriteLine("Invalid Choice. Please Try Again.");
+                        Console.WriteLine("Invalid Choice, please make a valid choice.");
                         break;
+
                 }
             }
 
@@ -173,5 +183,34 @@ class Program
         {
             Console.WriteLine("Invalid item ID or Item is already returned");
         }
+    }
+
+    static void SearchByTitle()
+    {
+        Console.Write("Enter the title to search: ");
+        string searchTerm = Console.ReadLine();
+
+        List<LibraryItem> searchResults = catalog.SearchByTitle(searchTerm);
+
+        if (searchResults.Count > 0)
+        {
+            Console.WriteLine($"Found {searchResults.Count} item(s) matching '{searchTerm}':");
+            foreach (var item in searchResults)
+            {
+                item.DisplayDetails();
+                Console.WriteLine("------------");
+            }
+        }
+
+        else
+        {
+            Console.WriteLine($"No items found matching '{searchTerm}'.");
+        }
+    }
+
+    static void DisplayCatalog()
+    {
+        Console.WriteLine("Library Catalog:");
+        catalog.DisplayCatalog();
     }
 }

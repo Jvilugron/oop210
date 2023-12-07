@@ -9,5 +9,11 @@ namespace FinalProject
     {
         public string Name { get; set; }
         public int PatronID { get; set; }
+
+        public void DisplayDetails()
+        {
+            Console.WriteLine($"Name: {Name}");
+            Console.WriteLine($"Patron ID: {PatronID}");
+        }
     }
 }
