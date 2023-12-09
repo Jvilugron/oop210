@@ -18,7 +18,10 @@ class Program
             Console.WriteLine("3. Register Patron");
             Console.WriteLine("4. Check Out item");
             Console.WriteLine("5. Return item");
-            Console.WriteLine("6. Exit");
+            Console.WriteLine("6. Search Item by title: ");
+            Console.WriteLine("7. Display Catalog: ");
+            Console.WriteLine("8. Save");
+            Console.WriteLine("9. Exit");
             Console.Write("Enter your Choice: ");
 
             if (int.TryParse(Console.ReadLine(), out int choice))
