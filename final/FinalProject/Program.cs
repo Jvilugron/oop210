@@ -139,52 +139,48 @@ class Program
 
     static void CheckOutItem()
     {
-        Console.Write("Enter Patron ID: ");
-        int patronID = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter Item ID: ");
-        int itemID = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter the title of the item to check out: ");
+        string title = Console.ReadLine();
 
-        Patron borrower = branch.Transactions.Exists(t => t.Borrower.PatronID == patronID) ?
-            branch.Transactions.Find(t => t.Borrower.PatronID == patronID).Borrower : null;
+        LibraryItem item = catalog.SearchByTitle(title)?.FirstOrDefault(i => i.Available);
 
-        LibraryItem item = catalog.Items.Find(i => i.ItemID == itemID);
-
-        if (borrower != null && item != null && item.Available)
+        if (item != null)
         {
-            Transaction newTransaction = new Transaction
+            if (item.Available)
             {
-                TransactionID = branch.Transactions.Count + 1,
-                Borrower = borrower,
-                BorrowedItem = item,
-                DueDate = DateTime.Now.AddDays(7) // Due date set one week from today.
-            };
-
-            branch.ProcessTransactions(newTransaction);
-            item.CheckOut();
+                item.CheckOut();
+                Console.WriteLine($"{item.Title} has been checked out.");
+            }
+            else
+            {
+                Console.WriteLine($"{item.Title} is not available for check out.");
+            }
         }
-
         else
         {
-            Console.WriteLine("Item not available. Please, make another reservatior");
+            Console.WriteLine("Item not found.");
         }
     }
 
     static void ReturnItem()
     {
-        Console.Write("Enter item ID that you want to return: ");
-        int itemID = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter the title of the item to return: ");
+        string title = Console.ReadLine();
 
-        LibraryItem item = catalog.Items.Find(i => i.ItemID == itemID);
+        LibraryItem item = catalog.SearchByTitle(title)?.FirstOrDefault();
 
         if (item != null && !item.Available)
         {
             item.ReturnItem();
-            Console.WriteLine($"{item} has been succesfully returned");
+            Console.WriteLine($"{item.Title} has been returned.");
         }
-
+        else if (item != null && item.Available)
+        {
+            Console.WriteLine($"{item.Title} is already available.");
+        }
         else
         {
-            Console.WriteLine("Invalid item ID or Item is already returned");
+            Console.WriteLine("Item not found.");
         }
     }
 

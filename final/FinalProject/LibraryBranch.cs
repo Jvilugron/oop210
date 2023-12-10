@@ -8,6 +8,7 @@ namespace FinalProject
     public class LibraryBranch 
     {
         public string BranchName { get; set; }
+        public List<Patron> Patrons {get; set; }
         public List<Transaction> Transactions { get; set; }
 
         public LibraryBranch()
@@ -15,15 +16,32 @@ namespace FinalProject
             Transactions = new List<Transaction>();
         }
 
+        public Patron GetPatronByName(string name)
+        {
+            if (Patrons != null && Patrons.Any())
+            {
+                return Patrons.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return null;
+            
+        }
+
+        public int GeneratePatronID()
+        {
+            int maxID = Patrons.Any() ? Patrons.Max(p => p.PatronID) : 0;
+            return maxID + 1;
+        }
+
         public void RegisterPatron(Patron patron)
         {
-            Console.WriteLine($"{patron.Name} has been registered at {BranchName} branch.");
+            Patrons.Add(patron);
         }
 
         public void ProcessTransactions(Transaction transaction)
         {
             Transactions.Add(transaction);
-            Console.WriteLine($"Transaction ID: {transaction.TransactionID} processed at {BranchName} branch");
+            
         }
     }
 }
